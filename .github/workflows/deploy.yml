@@ -50,8 +50,9 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://github-actions-private-bucket/$GITHUB_SHA.tar.gz
 
       - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
-        run: aws deploy create-deployment # AWS의 CodeDeploy에 만든 애플리케이션에 만든 배포그룹에 "배포생성" 을 수행 하는 명령어
-          --application-name myapp # 어떤 애플리케이션을 배포 할것인지 지정
-          --deployment-config-name CodeDeployDefault.AllAtOnce # 인스턴스 여러개를 한번에 배포(교체)하겠다고 지정
-          --deployment-group-name Production # 어떤 배포그룹에 배포를 할것인지 지정
-          --s3-location bucket=github-actions-private-bucket,bundleType=tgz,key=$GITHUB_SHA.tar.gz # 버킷명을 알려주고, 압축한 형식을 표현하고, 이 버킷에 어떤 파일을 사용할것인지 지정
+        run: | 
+          aws deploy create-deployment # AWS의 CodeDeploy에 만든 애플리케이션에 만든 배포그룹에 "배포생성" 을 수행 하는 명령어
+            --application-name myapp \ # 어떤 애플리케이션을 배포 할것인지 지정
+            --deployment-config-name CodeDeployDefault.AllAtOnce \ # 인스턴스 여러개를 한번에 배포(교체)하겠다고 지정
+            --deployment-group-name Production \ # 어떤 배포그룹에 배포를 할것인지 지정
+            --s3-location bucket=github-actions-private-bucket,bundleType=tgz,key=$GITHUB_SHA.tar.gz # 버킷명을 알려주고, 압축한 형식을 표현하고, 이 버킷에 어떤 파일을 사용할것인지 지정
