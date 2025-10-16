@@ -61,7 +61,7 @@ jobs:
       # 어떤 배포그룹에 배포를 할것인지 지정
       # 버킷명을 알려주고, 압축한 형식을 표현하고, 이 버킷에 어떤 파일을 사용할것인지 지정
 
-      - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
+      - name: Code Deploy를 활용해 EC2에 배포
         run: aws deploy create-deployment  
             --application-name myapp 
             --deployment-config-name CodeDeployDefault.AllAtOnce  
