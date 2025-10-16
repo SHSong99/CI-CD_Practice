@@ -19,7 +19,12 @@ jobs:
           java-version: 17
 
       - name: application.yml 파일 만들기
-        run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
+        env:
+          APPLICATION_YML_CONTENT: ${{ secrets.APPLICATION_YML }}
+        run: echo "$APPLICATION_YML_CONTENT" > ./src/main/resources/application.yml
+
+      - name: gradlew 실행 권한 부여
+        run: chmod +x ./gradlew
 
       - name: 테스트 및 빌드하기
         run: ./gradlew clean build
@@ -33,7 +38,8 @@ jobs:
 
       - name: ECR에 로그인하기
         id: login-ecr # 이 step의 구분명
-        uses: aws-actions/amazon-ecr-login@v2
+        uses: aws-actions/amazon-ecr-login@v2 # 임시 인증 토큰 받음
+
       - name: Docker 이미지 생성
         run: docker build -t myapp . # 현재 파일의 위치에 있는 Dockerfile로 빌드 하고 별칭 지정
 
@@ -50,8 +56,9 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://github-actions-private-bucket/$GITHUB_SHA.tar.gz
 
       - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
-        run: aws deploy create-deployment # AWS의 CodeDeploy에 만든 애플리케이션에 만든 배포그룹에 "배포생성" 을 수행 하는 명령어
-          --application-name myapp # 어떤 애플리케이션을 배포 할것인지 지정
-          --deployment-config-name CodeDeployDefault.AllAtOnce # 인스턴스 여러개를 한번에 배포(교체)하겠다고 지정
-          --deployment-group-name Production # 어떤 배포그룹에 배포를 할것인지 지정
-          --s3-location bucket=github-actions-private-bucket,bundleType=tgz,key=$GITHUB_SHA.tar.gz # 버킷명을 알려주고, 압축한 형식을 표현하고, 이 버킷에 어떤 파일을 사용할것인지 지정
+        run: | 
+          aws deploy create-deployment \ # AWS의 CodeDeploy에 만든 애플리케이션에 만든 배포그룹에 "배포생성" 을 수행 하는 명령어
+            --application-name myapp \ # 어떤 애플리케이션을 배포 할것인지 지정
+            --deployment-config-name CodeDeployDefault.AllAtOnce \ # 인스턴스 여러개를 한번에 배포(교체)하겠다고 지정
+            --deployment-group-name Production \ # 어떤 배포그룹에 배포를 할것인지 지정
+            --s3-location bucket=github-actions-private-bucket,bundleType=tgz,key=$GITHUB_SHA.tar.gz # 버킷명을 알려주고, 압축한 형식을 표현하고, 이 버킷에 어떤 파일을 사용할것인지 지정
