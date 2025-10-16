@@ -19,7 +19,7 @@ services:    # 컨테이너를 정의하는 서비스라고 선언
 
   server1: # ports 설정이 없는 컨테이너는 독립적으로 실행
     container_name: server1 # 컨테이너 이름을 지정
-    image: 291234479386.dkr.ecr.ap-northeast-2.amazonaws.com/myapp/myapp:latest
+    image: 291234479386.dkr.ecr.ap-northeast-2.amazonaws.com/myapp:latest
     volumes:
       # 애플리케이션 로그를 호스트에 저장
       - /home/ubuntu/docker/server1/logs:/app/logs
@@ -28,7 +28,7 @@ services:    # 컨테이너를 정의하는 서비스라고 선언
 
   server2:
     container_name: server2
-    image: 291234479386.dkr.ecr.ap-northeast-2.amazonaws.com/myapp/myapp:latest
+    image: 291234479386.dkr.ecr.ap-northeast-2.amazonaws.com/myapp:latest
     volumes:
       # 애플리케이션 로그를 호스트에 저장
       - /home/ubuntu/docker/server2/logs:/app/logs
