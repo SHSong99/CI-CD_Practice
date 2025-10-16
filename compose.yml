@@ -15,6 +15,7 @@ services:    # 컨테이너를 정의하는 서비스라고 선언
       - server2
 
   server1:
+    container_name: server1 # 컨테이너 이름을 지정
     image: 291234479386.dkr.ecr.ap-northeast-2.amazonaws.com/myapp:latest
     environment:
       - SERVER_PORT=8080
@@ -22,6 +23,7 @@ services:    # 컨테이너를 정의하는 서비스라고 선언
       - my-network
 
   server2:
+    container_name: server2
     image: 291234479386.dkr.ecr.ap-northeast-2.amazonaws.com/myapp:latest
     environment:
       - SERVER_PORT=8081
