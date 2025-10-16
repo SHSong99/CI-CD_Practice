@@ -65,5 +65,5 @@ jobs:
         run: aws deploy create-deployment  
             --application-name myapp 
             --deployment-config-name CodeDeployDefault.AllAtOnce  
-            --deployment-group-name Production 
+            --deployment-group-name privateEC2-WAS-deploy-group 
             --s3-location bucket=github-actions-private-bucket,bundleType=tgz,key=$GITHUB_SHA.tar.gz
