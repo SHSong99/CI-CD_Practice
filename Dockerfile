@@ -6,4 +6,4 @@ RUN chmod 777 /app/logs
 
 COPY ./build/libs/*SNAPSHOT.jar project.jar
 
-ENTRYPOINT ["java", "-jar", "project.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar project.jar >> /app/logs/was_log.log 2>&1"]
